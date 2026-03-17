@@ -34,6 +34,15 @@ const userSchema = new Schema(
       type: String,
       trim: true,
     },
+    phoneNumber: {
+      type: String,
+      trim: true,
+    },
+    countryCode: {
+      type: String,
+      trim: true,
+      default: "+91",
+    },
     password: {
       type: String,
       required: [true, "Password is required"],
@@ -97,15 +106,15 @@ userSchema.methods.generateRefreshToken = function () {
 };
 
 userSchema.methods.generateTemporaryToken = function () {
-    const unHashedToken = crypto.randomBytes(20).toString("hex")
+  const unHashedToken = crypto.randomBytes(20).toString("hex");
 
-    const hashedToken = crypto
-        .createHash("sha256")
-        .update(unHashedToken)
-        .digest("hex")
+  const hashedToken = crypto
+    .createHash("sha256")
+    .update(unHashedToken)
+    .digest("hex");
 
-    const tokenExpiry = Date.now() + (20*60*1000) //20 mins
-    return {unHashedToken, hashedToken, tokenExpiry}
+  const tokenExpiry = Date.now() + 20 * 60 * 1000; //20 mins
+  return { unHashedToken, hashedToken, tokenExpiry };
 };
 
 export const User = mongoose.model("User", userSchema);

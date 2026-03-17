@@ -17,7 +17,19 @@ const userRegisterValidator = () => {
       .isLength({ min: 3 })
       .withMessage("Username must be at least 3 characters long"),
     body("password").trim().notEmpty().withMessage("Password is required"),
+
     body("fullName").optional().trim(),
+    body("countryCode")
+      .optional()
+      .trim()
+      .isString()
+      .withMessage("Country code must be string"),
+
+    body("phoneNumber")
+      .optional()
+      .trim()
+      .isLength({ min: 10, max: 10 })
+      .withMessage("Phone number must be 10 digits"),
   ];
 };
 
@@ -25,6 +37,17 @@ const userLoginValidator = () => {
   return [
     body("email").optional().isEmail().withMessage("Email is invalid"),
     body("password").notEmpty().withMessage("Password is required"),
+    body("countryCode")
+      .optional()
+      .trim()
+      .isString()
+      .withMessage("Country code must be string"),
+    body("phoneNumber")
+      .optional()
+      .trim()
+      .isString()
+      .isLength({ min: 10, max: 10 })
+      .withMessage("Invalid phone number"),
   ];
 };
 

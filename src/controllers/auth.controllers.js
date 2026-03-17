@@ -27,7 +27,7 @@ const generateAccessAndRefreshTokens = async (userId) => {
 };
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { email, username, password, role } = req.body;
+  const { email, username, password, role,countryCode,phoneNumber } = req.body;
 
   const existedUser = await User.findOne({
     $or: [{ username }, { email }],
@@ -41,6 +41,9 @@ const registerUser = asyncHandler(async (req, res) => {
     email,
     password,
     username,
+    countryCode,
+    phoneNumber,
+  
     isEmailVerified: false,
   });
 
@@ -81,13 +84,16 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 const login = asyncHandler(async (req, res) => {
-  const { email, password, username } = req.body;
+  const { email, password, username,phoneNumber,countryCode } = req.body;
 
-  if (!email) {
+  if (!email&& !phoneNumber) {
     throw new ApiError(400, " email is required");
   }
 
-  const user = await User.findOne({ email });
+  // const user = await User.findOne({ email });
+    const user = await User.findOne({
+    $or: [{ email }, { phoneNumber }],
+  });
 
   if (!user) {
     throw new ApiError(400, "User does not exists");

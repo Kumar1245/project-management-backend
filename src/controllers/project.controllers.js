@@ -8,6 +8,7 @@ import mongoose from "mongoose";
 import { AvailableUserRole, UserRolesEnum } from "../utils/constants.js";
 
 const getProjects = asyncHandler(async (req, res) => {
+  
   const projects = await ProjectMember.aggregate([
     {
       $match: {
